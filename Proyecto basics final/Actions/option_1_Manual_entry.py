@@ -26,22 +26,24 @@ def int_numbers():
             print("Por favor, ingrese un número válido.")
 
 def option_1():
-    
-    number_students = int_numbers()
-    Students={}
-    
-    for i in range(number_students):
-        
-        name = only_letters()
 
-        Students[name] = {
-            "section": input("Ingrese el grado de sección  del estudiante: "),
+    number_students = int_numbers()
+
+    students = []
+
+    for i in range(number_students):
+
+        student = {
+            "name": only_letters(),
+            "section": input("Ingrese el grado de sección del estudiante: "),
             "nota_espanol": from_1_to_100("Español"),
             "nota_ingles": from_1_to_100("Inglés"),
             "nota_sociales": from_1_to_100("Sociales"),
             "nota_ciencias": from_1_to_100("Ciencias")
         }
 
-    print (Students)
-    return Students
+        students.append(student)
+
+    print("Información de estudiantes ingresada exitosamente.")
+    return students
 

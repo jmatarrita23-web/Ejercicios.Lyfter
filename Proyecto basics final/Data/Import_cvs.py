@@ -3,14 +3,16 @@ import csv
 def import_students():
     file_path = input("Enter the CSV file path: ").strip('"')
 
-    students = {}
+    students = []
 
     try:
         with open(file_path, mode="r", newline="", encoding="utf-8") as file:
             reader = csv.DictReader(file)
 
             for row in reader:
-                students[row["nombre"]] = {
+
+                student = {
+                    "name": row["nombre"],
                     "section": row["section"],
                     "nota_espanol": int(row["nota_espanol"]),
                     "nota_ingles": int(row["nota_ingles"]),
@@ -18,9 +20,11 @@ def import_students():
                     "nota_ciencias": int(row["nota_ciencias"])
                 }
 
+                students.append(student)
+
         print("Students imported successfully.")
         return students
 
     except FileNotFoundError:
-        print("No se encontró el archivo. Por favor, verifique la ruta e intente nuevamente.")
-        return {}
+        print("No se encontró el archivo.")
+        return []
