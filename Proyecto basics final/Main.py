@@ -33,7 +33,7 @@ while True:
     if options == 6:
         from Data.Import_cvs import import_students
         students=import_students()
-        students.extend(students)
+        
         
     if options == 7:
         print ("end")

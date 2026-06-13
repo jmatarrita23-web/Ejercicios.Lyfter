@@ -15,10 +15,12 @@ def averages_diccionary(students):
         students_average[student["name"]] = average
 
     return students_average
+
+def print_average(students_average):
     
-def print_averages(students_average):
-    for name, average in students_average.items():
-        print(f"{name}: {average}")
+    total_average = sum(students_average.values()) / len(students_average)
+
+    print(total_average)
 
 def top_3_students(students_average):
 
