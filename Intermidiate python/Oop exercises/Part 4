@@ -1,0 +1,53 @@
+class Head:
+    pass
+
+
+class Hand:
+    pass
+
+
+class Feet:
+    pass
+
+
+class Arm:
+    def __init__(self, hand):
+        self.hand = hand
+
+
+class Leg:
+    def __init__(self, feet):
+        self.feet = feet
+
+
+class Torso:
+    def __init__(self, head, right_arm, left_arm,right_leg, left_leg):
+
+        self.head = head
+        self.right_arm = right_arm
+        self.left_arm = left_arm
+        self.right_leg = right_leg
+        self.left_leg = left_leg
+
+
+class Human:
+    def __init__(self, torso):
+        self.torso = torso
+        
+cabezon=Head()
+
+mano_peluda=Hand()
+
+brazopeludoiz=Arm(mano_peluda)
+brazopeludodr=Arm(mano_peluda)
+
+piedemono=Feet()
+
+piernademonoiz=Leg(piedemono)
+piernademonodr=Leg(piedemono)
+
+Torsopeludo=Torso(cabezon,brazopeludoiz,brazopeludodr,piernademonoiz,piernademonodr)
+
+Human=Human(Torsopeludo)
+        
+
