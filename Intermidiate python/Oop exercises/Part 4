@@ -48,6 +48,6 @@ piernademonodr=Leg(piedemono)
 
 Torsopeludo=Torso(cabezon,brazopeludoiz,brazopeludodr,piernademonoiz,piernademonodr)
 
-Human=Human(Torsopeludo)
+humanmono = Human(Torsopeludo)
         
 

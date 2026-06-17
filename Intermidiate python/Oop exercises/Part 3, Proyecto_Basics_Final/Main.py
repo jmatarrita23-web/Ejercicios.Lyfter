@@ -10,7 +10,7 @@ while True:
     if options == 1:
         from Actions.option_1_Manual_entry import option_1
         new_students = option_1()
-        students.append(new_students)
+        students.extend(new_students)
 
     if options == 2:
         for student in students:
