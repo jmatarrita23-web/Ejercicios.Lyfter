@@ -1,0 +1,21 @@
+def validate_numbers(function):
+
+    def wrapper(num1, num2):
+
+        if not isinstance(num1, (int, float)):
+            raise TypeError("First parameter is not a number")
+
+        if not isinstance(num2, (int, float)):
+            raise TypeError("Second parameter is not a number")
+
+        return function(num1, num2)
+
+    return wrapper
+
+
+@validate_numbers
+def multiply(num1, num2):
+    return num1 * num2
+
+
+print(multiply(4, 5))

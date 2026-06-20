@@ -1,0 +1,23 @@
+class User:
+
+    def __init__(self, age):
+        self.age = age
+        
+def adult_age(func):
+    
+    def wrapper(User):
+        
+        if User.age < 18:
+            raise ValueError("Es menor de edad")
+        
+        return func(User)
+    
+    return wrapper
+
+@adult_age
+def enter_bar(User):
+    print ("Puedes entrar al bar")
+    
+ninoraro = User(14)
+
+enter_bar(ninoraro)
