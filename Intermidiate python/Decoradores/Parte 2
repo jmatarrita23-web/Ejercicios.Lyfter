@@ -1,14 +1,12 @@
 def validate_numbers(function):
 
-    def wrapper(num1, num2):
+    def wrapper(*args):
 
-        if not isinstance(num1, (int, float)):
-            raise TypeError("First parameter is not a number")
+        for arg in args:
+            if not isinstance(arg, (int, float)):
+                raise TypeError(f"{arg} is not a number")
 
-        if not isinstance(num2, (int, float)):
-            raise TypeError("Second parameter is not a number")
-
-        return function(num1, num2)
+        return function(*args)
 
     return wrapper
 
@@ -18,4 +16,4 @@ def multiply(num1, num2):
     return num1 * num2
 
 
-print(multiply(4, 5))
+print(multiply(4, 10))
