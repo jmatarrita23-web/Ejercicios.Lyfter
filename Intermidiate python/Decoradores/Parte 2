@@ -1,0 +1,19 @@
+def validate_numbers(function):
+
+    def wrapper(*args):
+
+        for arg in args:
+            if not isinstance(arg, (int, float)):
+                raise TypeError(f"{arg} is not a number")
+
+        return function(*args)
+
+    return wrapper
+
+
+@validate_numbers
+def multiply(num1, num2):
+    return num1 * num2
+
+
+print(multiply(4, 10))
