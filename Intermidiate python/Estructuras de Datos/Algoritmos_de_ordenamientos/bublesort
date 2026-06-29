@@ -1,0 +1,24 @@
+def bubble_sort(list_to_sort):
+
+    for iteration in range(len(list_to_sort) - 1):
+
+        for index in range(len(list_to_sort) - 1, iteration, -1):
+
+            current_element = list_to_sort[index - 1]
+            next_element = list_to_sort[index]
+
+            print(f"Iteración {iteration + 1}, índice {index}: "
+            f"{current_element} - {next_element}")
+
+            if next_element < current_element:
+                list_to_sort[index], list_to_sort[index - 1] = (
+                    list_to_sort[index - 1],
+                    list_to_sort[index]
+                )
+
+
+my_test_list = [18, -11, 68, 6, 32, 53, -2]
+
+bubble_sort(my_test_list)
+
+print("Lista ordenada:", my_test_list)
