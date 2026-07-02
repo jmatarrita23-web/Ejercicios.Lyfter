@@ -1,0 +1,62 @@
+# -----Ejercicio 1------
+# El algoritmo tiene dos ciclos (for), uno dentro del otro. Esto hace que tenga que revisar la lista muchas veces.
+# Como el número de operaciones crece aproximadamente como n × n, decimos que la complejidad es O(n²).
+
+# -----Ejercicio 2-----
+
+# 1.
+def print_numbers_times_2(numbers_list):
+    for number in numbers_list:
+        print(number * 2)
+
+# --comments--
+# El algoritmo recorre la lista una sola vez. Si la lista tiene n elementos,
+# realizará n iteraciones.
+# Complejidad temporal: O(n)
+
+
+# 2.
+def check_if_lists_have_an_equal(list_a, list_b):
+    for element_a in list_a:
+        for element_b in list_b:
+            if element_a == element_b:
+                return True
+    return False
+
+# --comments--
+# El algoritmo tiene dos ciclos (for), uno dentro del otro.
+# Cada elemento de la primera lista se compara con todos los elementos
+# de la segunda lista.
+# Como el número de comparaciones crece aproximadamente como n × n,
+# la complejidad temporal es O(n²).
+
+
+# 3.
+def print_10_or_less_elements(list_to_print):
+    list_len = len(list_to_print)
+
+    for index in range(min(list_len, 10)):
+        print(list_to_print[index])
+
+# --comments--
+# El algoritmo imprime como máximo 10 elementos, aunque la lista tenga más.
+# Como el número de iteraciones nunca supera 10,
+# la complejidad temporal es O(1).
+
+
+# 4.
+def generate_list_trios(list_a, list_b, list_c):
+    result_list = []
+
+    for element_a in list_a:
+        for element_b in list_b:
+            for element_c in list_c:
+                result_list.append(f'{element_a} {element_b} {element_c}')
+
+    return result_list
+
+# --comments--
+# El algoritmo tiene tres ciclos (for), uno dentro del otro.
+# Genera todas las combinaciones posibles entre las tres listas.
+# Como el número de operaciones crece aproximadamente como n × n × n,
+# la complejidad temporal es O(n³).
