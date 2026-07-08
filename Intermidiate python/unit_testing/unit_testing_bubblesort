@@ -1,0 +1,40 @@
+def bubble_sort(list_to_sort):
+
+    if not isinstance(list_to_sort, list):
+        raise TypeError("El parámetro debe ser una lista")
+
+    # Aquí va el algoritmo Bubble Sort
+    for iteration in range(len(list_to_sort) - 1):
+        for index in range(len(list_to_sort) - 1 - iteration):
+            if list_to_sort[index] > list_to_sort[index + 1]:
+                list_to_sort[index], list_to_sort[index + 1] = (
+                    list_to_sort[index + 1],
+                    list_to_sort[index]
+                )
+
+import unittest
+
+class TestBubbleSort(unittest.TestCase):
+
+    def test_lista_pequena(self):
+        lista = [18, -11, 68, 6, 32, 53, -2]
+        bubble_sort(lista)
+        self.assertEqual(lista, [-11, -2, 6, 18, 32, 53, 68])
+
+    def test_lista_grande(self):
+        lista = list(range(150, 0, -1))
+        bubble_sort(lista)
+        self.assertEqual(lista, sorted(lista))
+
+    def test_lista_vacia(self):
+        lista = []
+        bubble_sort(lista)
+        self.assertEqual(lista, [])
+
+    def test_parametro_no_es_lista(self):
+        with self.assertRaises(TypeError):
+            bubble_sort("Hola")
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -1,0 +1,190 @@
+import unittest
+from unittest.mock import patch
+from io import StringIO
+
+# ---------- EJERCICIO 3 ----------
+
+def sum_of_list(numbers):
+    return sum(numbers)
+
+
+# ---------- EJERCICIO 4 ----------
+
+def flip(text):
+    reversed_text = ""
+
+    for i in range(len(text) - 1, -1, -1):
+        reversed_text += text[i]
+
+    return reversed_text
+
+
+# ---------- EJERCICIO 5 ----------
+
+def lower_cap_letters():
+    text = input("Ingrese un texto: ")
+    Cap_letters = 0
+    Lower_letters = 0
+
+    for letter in text:
+        if letter.isupper():
+            Cap_letters += 1
+        elif letter.islower():
+            Lower_letters += 1
+
+    print(f"El número de letras mayúsculas es: {Cap_letters}")
+    print(f"El número de letras minúsculas es: {Lower_letters}")
+
+
+# ---------- EJERCICIO 6 ----------
+
+def phrase_order(phrase):
+    list_phrase = phrase.split("-")
+    sort_phrase = sorted(list_phrase)
+    print("-".join(sort_phrase))
+
+
+# ---------- EJERCICIO 7 ----------
+
+def only_prime_numbers(numbers):
+    primes = []
+
+    for num in numbers:
+        if num <= 1:
+            continue
+
+        is_prime = True
+
+        for i in range(2, num):
+            if num % i == 0:
+                is_prime = False
+                break
+
+        if is_prime:
+            primes.append(num)
+
+    return primes
+
+
+# ==================================================
+#                    UNIT TESTS
+# ==================================================
+
+class TestSumOfList(unittest.TestCase):
+
+    def test_sum_of_list(self):
+        numbers = [1, 2, 3, 4, 5]
+        resultado = sum_of_list(numbers)
+        self.assertEqual(resultado, 15)
+
+    def test_sum_of_list_negativos(self):
+        numbers = [-1, -2, -3]
+        resultado = sum_of_list(numbers)
+        self.assertEqual(resultado, -6)
+
+    def test_sum_of_list_vacia(self):
+        numbers = []
+        resultado = sum_of_list(numbers)
+        self.assertEqual(resultado, 0)
+
+
+class TestFlip(unittest.TestCase):
+
+    def test_flip(self):
+        texto = "Hola"
+        resultado = flip(texto)
+        self.assertEqual(resultado, "aloH")
+
+    def test_flip_un_caracter(self):
+        texto = "A"
+        resultado = flip(texto)
+        self.assertEqual(resultado, "A")
+
+    def test_flip_vacio(self):
+        texto = ""
+        resultado = flip(texto)
+        self.assertEqual(resultado, "")
+
+
+class TestLowerCapLetters(unittest.TestCase):
+
+    @patch("builtins.input", return_value="HoLa")
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_lower_cap_letters(self, salida, entrada):
+        lower_cap_letters()
+
+        resultado = salida.getvalue()
+
+        self.assertIn("El número de letras mayúsculas es: 2", resultado)
+        self.assertIn("El número de letras minúsculas es: 2", resultado)
+
+    @patch("builtins.input", return_value="HOLA")
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_lower_cap_letters_todo_mayusculas(self, salida, entrada):
+        lower_cap_letters()
+
+        resultado = salida.getvalue()
+
+        self.assertIn("El número de letras mayúsculas es: 4", resultado)
+        self.assertIn("El número de letras minúsculas es: 0", resultado)
+
+    @patch("builtins.input", return_value="hola")
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_lower_cap_letters_todo_minusculas(self, salida, entrada):
+        lower_cap_letters()
+
+        resultado = salida.getvalue()
+
+        self.assertIn("El número de letras mayúsculas es: 0", resultado)
+        self.assertIn("El número de letras minúsculas es: 4", resultado)
+
+
+class TestPhraseOrder(unittest.TestCase):
+
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_phrase_order(self, salida):
+        phrase_order("verde-rojo-amarillo")
+
+        resultado = salida.getvalue().strip()
+
+        self.assertEqual(resultado, "amarillo-rojo-verde")
+
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_phrase_order_dos_palabras(self, salida):
+        phrase_order("perro-gato")
+
+        resultado = salida.getvalue().strip()
+
+        self.assertEqual(resultado, "gato-perro")
+
+    @patch("sys.stdout", new_callable=StringIO)
+    def test_phrase_order_una_palabra(self, salida):
+        phrase_order("python")
+
+        resultado = salida.getvalue().strip()
+
+        self.assertEqual(resultado, "python")
+
+
+class TestOnlyPrimeNumbers(unittest.TestCase):
+
+    def test_only_prime_numbers(self):
+        numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        resultado = only_prime_numbers(numbers)
+        self.assertEqual(resultado, [2, 3, 5, 7])
+
+    def test_only_prime_numbers_sin_primos(self):
+        numbers = [1, 4, 6, 8, 9, 10]
+        resultado = only_prime_numbers(numbers)
+        self.assertEqual(resultado, [])
+
+    def test_only_prime_numbers_todos_primos(self):
+        numbers = [2, 3, 5, 7, 11]
+        resultado = only_prime_numbers(numbers)
+        self.assertEqual(resultado, [2, 3, 5, 7, 11])
+        
+if __name__ == "__main__":
+    unittest.main()
+
+
+
