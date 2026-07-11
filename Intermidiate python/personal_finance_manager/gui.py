@@ -1,6 +1,6 @@
 import FreeSimpleGUI as sg
 
-from finance_manager import FinanceManager
+from finance_manager import FinanceManager, NO_CATEGORIES_MESSAGE
 
 
 class FinanceManagerGUI:
@@ -8,6 +8,8 @@ class FinanceManagerGUI:
         sg.theme("LightBlue2")
         self.finance_manager = FinanceManager()
         self.window = self.create_main_window()
+        if self.finance_manager.data_error_message:
+            sg.popup_error(self.finance_manager.data_error_message, title="Error")
 
     def create_main_window(self):
         table_headings = ["Fecha", "Tipo", "Titulo", "Monto", "Categoria"]
@@ -47,7 +49,9 @@ class FinanceManagerGUI:
             event, _ = self.window.read()
 
             if event in (sg.WIN_CLOSED, "Salir"):
-                self.finance_manager.save_data()
+                saved, message = self.finance_manager.save_data()
+                if not saved:
+                    sg.popup_error(message, title="Error")
                 break
 
             if event == "Agregar categoria":
@@ -84,10 +88,7 @@ class FinanceManagerGUI:
 
     def open_transaction_window(self, transaction_type):
         if not self.finance_manager.categories:
-            sg.popup_error(
-                "No hay categorias disponibles. Agregue una categoria antes de registrar movimientos.",
-                title="Error",
-            )
+            sg.popup_error(NO_CATEGORIES_MESSAGE, title="Error")
             return
 
         window_title = "Agregar gasto" if transaction_type == "expense" else "Agregar ingreso"

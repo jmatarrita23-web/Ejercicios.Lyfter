@@ -1,6 +1,8 @@
 from models import Category, Transaction
-from storage import CsvStorage
+from storage import CsvStorage, StorageError
 from validation import validate_category_form, validate_transaction_form
+
+NO_CATEGORIES_MESSAGE = "Debe agregar al menos una categoria antes de registrar movimientos."
 
 
 class FinanceManager:
@@ -8,14 +10,25 @@ class FinanceManager:
         self.storage = storage or CsvStorage()
         self.categories = []
         self.transactions = []
+        self.data_error_message = ""
         self.load_data()
 
     def load_data(self):
-        self.categories = self.storage.load_categories()
-        self.transactions = self.storage.load_transactions()
+        try:
+            self.categories = self.storage.load_categories()
+            self.transactions = self.storage.load_transactions()
+        except StorageError as error:
+            self.categories = []
+            self.transactions = []
+            self.data_error_message = str(error)
 
     def save_data(self):
-        self.storage.save_all(self.categories, self.transactions)
+        try:
+            self.storage.save_all(self.categories, self.transactions)
+            return True, ""
+        except StorageError as error:
+            self.data_error_message = str(error)
+            return False, str(error)
 
     def add_category(self, name):
         clean_name = name.strip()
@@ -24,25 +37,41 @@ class FinanceManager:
             return False, message
 
         self.categories.append(Category(name=clean_name))
-        self.save_data()
+        saved, message = self.save_data()
+        if not saved:
+            self.categories.pop()
+            return False, message
+
         return True, "Categoria agregada correctamente."
 
     def add_transaction(self, title, amount, category, transaction_type):
         if not self.categories:
-            return False, "Debe agregar al menos una categoria antes de registrar movimientos."
+            return False, NO_CATEGORIES_MESSAGE
 
-        is_valid, message = validate_transaction_form(title, amount, category)
+        clean_title = title.strip()
+        clean_category = category.strip()
+        is_valid, message = validate_transaction_form(
+            clean_title,
+            amount,
+            clean_category,
+            transaction_type,
+            self.categories,
+        )
         if not is_valid:
             return False, message
 
         transaction = Transaction.create(
-            title=title.strip(),
+            title=clean_title,
             amount=amount,
-            category=category,
+            category=clean_category,
             transaction_type=transaction_type,
         )
         self.transactions.append(transaction)
-        self.save_data()
+        saved, message = self.save_data()
+        if not saved:
+            self.transactions.pop()
+            return False, message
+
         return True, f"{self.get_transaction_type_label(transaction_type)} agregado correctamente."
 
     def add_expense(self, title, amount, category):

@@ -23,6 +23,19 @@ def validate_unique_category(category_name, existing_categories):
     return True, ""
 
 
+def validate_existing_category(category_name, existing_categories):
+    existing_names = [category.name.lower() for category in existing_categories]
+    if category_name.strip().lower() not in existing_names:
+        return False, "La categoria seleccionada no existe."
+    return True, ""
+
+
+def validate_transaction_type(transaction_type):
+    if transaction_type not in ("income", "expense"):
+        return False, "El tipo de movimiento no es valido."
+    return True, ""
+
+
 def validate_category_form(category_name, existing_categories):
     is_valid, message = validate_required_text(category_name, "categoria")
     if not is_valid:
@@ -31,7 +44,7 @@ def validate_category_form(category_name, existing_categories):
     return validate_unique_category(category_name, existing_categories)
 
 
-def validate_transaction_form(title, amount, category):
+def validate_transaction_form(title, amount, category, transaction_type, existing_categories):
     is_valid, message = validate_required_text(title, "titulo")
     if not is_valid:
         return False, message
@@ -41,6 +54,14 @@ def validate_transaction_form(title, amount, category):
         return False, message
 
     is_valid, message = validate_required_text(category, "categoria")
+    if not is_valid:
+        return False, message
+
+    is_valid, message = validate_existing_category(category, existing_categories)
+    if not is_valid:
+        return False, message
+
+    is_valid, message = validate_transaction_type(transaction_type)
     if not is_valid:
         return False, message
 

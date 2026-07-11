@@ -2,7 +2,8 @@ import tempfile
 import unittest
 
 from finance_manager import FinanceManager
-from storage import CsvStorage
+from models import Category, Transaction
+from storage import CsvStorage, StorageError
 from validation import validate_amount
 
 
@@ -64,6 +65,70 @@ class FinanceManagerTests(unittest.TestCase):
 
         self.assertFalse(success)
         self.assertIn("mayor que cero", message)
+
+    def test_rejects_non_numeric_amount(self):
+        finance_manager, temporary_folder = self.create_temporary_manager()
+        with temporary_folder:
+            finance_manager.add_category("General")
+
+            success, message = finance_manager.add_income("Pago", "abc", "General")
+
+            self.assertFalse(success)
+            self.assertIn("numero valido", message)
+
+    def test_rejects_transaction_without_title(self):
+        finance_manager, temporary_folder = self.create_temporary_manager()
+        with temporary_folder:
+            finance_manager.add_category("General")
+
+            success, message = finance_manager.add_expense("", "25", "General")
+
+            self.assertFalse(success)
+            self.assertIn("titulo", message)
+
+    def test_rejects_transaction_without_category(self):
+        finance_manager, temporary_folder = self.create_temporary_manager()
+        with temporary_folder:
+            finance_manager.add_category("General")
+
+            success, message = finance_manager.add_expense("Compra", "25", "")
+
+            self.assertFalse(success)
+            self.assertIn("categoria", message)
+
+    def test_rejects_transaction_with_unknown_category(self):
+        finance_manager, temporary_folder = self.create_temporary_manager()
+        with temporary_folder:
+            finance_manager.add_category("General")
+
+            success, message = finance_manager.add_expense("Compra", "25", "Fantasma")
+
+            self.assertFalse(success)
+            self.assertIn("no existe", message)
+
+    def test_storage_saves_and_loads_categories_directly(self):
+        temporary_folder = tempfile.TemporaryDirectory()
+        with temporary_folder:
+            storage = CsvStorage(temporary_folder.name)
+
+            storage.save_categories([Category("Servicios")])
+            loaded_categories = storage.load_categories()
+
+            self.assertEqual(["Servicios"], [category.name for category in loaded_categories])
+
+    def test_storage_rejects_categories_file_with_wrong_headers(self):
+        temporary_folder = tempfile.TemporaryDirectory()
+        with temporary_folder:
+            storage = CsvStorage(temporary_folder.name)
+            storage.ensure_data_folder_exists()
+            storage.categories_path.write_text("wrong\nComida\n", encoding="utf-8")
+
+            with self.assertRaises(StorageError):
+                storage.load_categories()
+
+    def test_transaction_rejects_invalid_transaction_type(self):
+        with self.assertRaises(ValueError):
+            Transaction("Pago", "10", "General", "transfer", "2026-07-11 10:00")
 
 
 if __name__ == "__main__":

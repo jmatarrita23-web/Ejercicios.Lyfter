@@ -3,6 +3,8 @@ from datetime import datetime
 
 class Category:
     def __init__(self, name):
+        if not name or not name.strip():
+            raise ValueError("El nombre de la categoria es obligatorio.")
         self.name = name
 
     def to_row(self):
@@ -14,9 +16,24 @@ class Category:
 
 
 class Transaction:
+    VALID_TRANSACTION_TYPES = ("income", "expense")
+
     def __init__(self, title, amount, category, transaction_type, date):
+        if not title or not title.strip():
+            raise ValueError("El titulo es obligatorio.")
+
+        if not category or not category.strip():
+            raise ValueError("La categoria es obligatoria.")
+
+        if transaction_type not in self.VALID_TRANSACTION_TYPES:
+            raise ValueError("El tipo de movimiento no es valido.")
+
+        numeric_amount = float(amount)
+        if numeric_amount <= 0:
+            raise ValueError("El monto debe ser mayor que cero.")
+
         self.title = title
-        self.amount = float(amount)
+        self.amount = numeric_amount
         self.category = category
         self.transaction_type = transaction_type
         self.date = date
