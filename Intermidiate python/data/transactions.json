@@ -1,0 +1,16 @@
+[
+    {
+        "title": "Pollo",
+        "amount": 5000.0,
+        "category": "comida",
+        "transaction_type": "expense",
+        "date": "2026-07-04 23:34"
+    },
+    {
+        "title": "salario mes de junio",
+        "amount": 600000.0,
+        "category": "salario",
+        "transaction_type": "income",
+        "date": "2026-07-04 23:36"
+    }
+]
