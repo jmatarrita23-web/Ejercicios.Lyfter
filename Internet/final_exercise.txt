@@ -1,0 +1,87 @@
+--Parte 1 Del Cliente al Servidor--
+
+        1.Cliente (navegador): El navegador recibe la dirección www.youtube.com que escribe el usuario. 
+        Luego solicita la dirección IP del sitio al DNS y, una vez la obtiene, envía una solicitud (request) al servidor para pedir la página o el video.
+
+        2.DNS: El DNS (Sistema de Nombres de Dominio) traduce el nombre www.youtube.com en una dirección IP. 
+        Esto permite que el navegador sepa a qué servidor debe conectarse.
+
+        3.Dirección IP: La dirección IP es un número único que identifica a un dispositivo o servidor en la red.
+        El navegador utiliza la IP del servidor para enviar la solicitud al destino correcto.
+
+        4. Servidor: El servidor recibe la solicitud del navegador, la procesa y busca la información solicitada. 
+        Después envía una respuesta con la página web o el video para que el navegador pueda mostrarlo.
+
+        5. HTTP/HTTPS: HTTP y HTTPS son los protocolos que permiten la comunicación entre el navegador y el servidor. 
+        HTTPS es la versión segura, ya que cifra la información que se transmite para proteger los datos del usuario.
+
+--Parte 2 Frontend y Backend action---
+        1. Frontend: El frontend es la parte de la aplicación que ve y utiliza el usuario. 
+        En una app para agendar citas médicas, incluiría las pantallas para iniciar sesión, ver los horarios disponibles y reservar una cita. 
+        Tres tecnologías comunes son HTML, CSS y JavaScript.
+
+        2. Backend: El backend es la parte que funciona en el servidor y se encarga de procesar la información. 
+        En esta aplicación, almacenaría los datos de pacientes, médicos y citas, además de verificar la disponibilidad de horarios. 
+        Tres tecnologías comunes son Python, Node.js y Java.
+
+        3. Comunicación entre frontend y backend: El frontend se comunica con el backend mediante una API, utilizando el protocolo HTTP. 
+        El frontend envía una request (solicitud), por ejemplo para consultar los horarios disponibles, y el backend procesa esa solicitud 
+        y devuelve una response (respuesta) con la información para mostrarla al usuario.
+
+-- Parte 3--
+| Tipo de API | Formato de datos usado | Nivel de flexibilidad | Dificultad de implementación | Uso actual |
+|--------------|-------------------------|------------------------|-------------------------------|------------|
+| REST         | JSON                    | Alta                   | Baja                          | Alta       |
+| SOAP         | XML                     | Baja                   | Alta                          | Media      |
+| GraphQL      | JSON                    | Muy alta               | Media                         | Alta       |
+
+REST sería la opción más apropiada para una startup moderna, porque es fácil de implementar, utiliza JSON, tiene una gran comunidad, 
+es ampliamente compatible con aplicaciones web y móviles, y permite desarrollar APIs de forma rápida y eficiente. Además, 
+es el estilo de API más utilizado en la actualidad, por lo que facilita el mantenimiento y la integración con otros sistemas.
+
+-- Parte 4--
+            ---- Parte 1-----
+PokéAPI
+
+Breve descripción
+
+PokéAPI es una API REST pública y gratuita que proporciona información sobre el mundo de Pokémon. 
+Permite consultar datos de Pokémon, habilidades, movimientos, tipos, evoluciones, objetos y regiones, devolviendo la información en formato JSON mediante solicitudes HTTP. 
+Es muy utilizada para aprender a consumir APIs y desarrollar aplicaciones web.
+
+            --- Parte 2 ------
+PokéAPI (solo usa GET)
+│
+├── GET    https://pokeapi.co/api/v2/pokemon/pikachu
+│
+├── POST   https://pokeapi.co/api/v2/pokemon
+│
+└── PUT    https://pokeapi.co/api/v2/pokemon/pikachu
+
+            ---- Parte 3 ----
+
+Pokemon API
+│
+├── GET    https://pokeapi.co/api/v2/pokemon/pikachu
+│         Estado: 200 OK
+│         Content-Type: application/json
+│         Resultado: Devuelve la información de Pikachu en formato JSON.
+│
+├── POST   https://pokeapi.co/api/v2/pokemon
+│         Estado: 404 Not Found
+│         Content-Type: application/json
+│         Resultado: La PokéAPI no permite crear nuevos Pokémon mediante POST.
+│
+└── PUT    https://pokeapi.co/api/v2/pokemon/pikachu
+          Estado: 404 Not Found
+          Content-Type: application/json
+          Resultado: La PokéAPI es de solo lectura y no permite modificar Pokémon mediante PUT.
+        
+---- Parte 5 ----
+
+Durante esta práctica aprendí que una API funciona como un intermediario entre un cliente y un servidor, permitiendo solicitar información mediante diferentes métodos HTTP. 
+También comprendí que cada solicitud recibe una respuesta con un código de estado, encabezados y un cuerpo en formato JSON, lo que facilita saber si la petición fue exitosa o si ocurrió algún error.
+
+Postman me ayudó a entender cómo se comunica un cliente con un servidor, ya que pude enviar solicitudes y observar las respuestas de la API en tiempo real. 
+Además, aprendí a identificar los métodos HTTP, los endpoints, los códigos de estado como 200 OK y 404 Not Found, y a interpretar la información devuelta por el servidor, lo que me permitió comprender mejor el funcionamiento de una API REST.
+
